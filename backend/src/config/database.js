@@ -50,7 +50,7 @@ async function initializeDatabase() {
   // force: true drops and recreates all tables in correct dependency order.
   // Safe right now because the database is empty / being reset.
   // TODO: change back to { alter: true } once tables exist and you have real data to preserve.
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ alter: true });
 
   console.log('All tables synced successfully.');
 }
