@@ -1,0 +1,26 @@
+{
+  "name": "admin-panel-backend",
+  "version": "1.0.0",
+  "description": "Express.js MVC backend for admin panel",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.2",
+    "dotenv": "^16.4.1",
+    "express": "^4.21.1",
+    "file-type": "^16.0.0",
+    "jsonwebtoken": "^9.0.1",
+    "multer": "^2.0.2",
+    "pg": "^8.12.1",
+    "sequelize": "^6.9.0",
+    "sharp": "^0.32.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.1"
+  }
+}
