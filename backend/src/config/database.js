@@ -67,7 +67,7 @@ async function initializeDatabase() {
   await User.update({ roleId: defaultRole.id }, { where: { roleId: null } });
   await sequelize.query(`ALTER TABLE "users" ALTER COLUMN "roleId" SET DEFAULT ${defaultRole.id}`);
 
-  await sequelize.sync({ alter: true });
+  await sequelize.sync({ force: true });
 }
 
 module.exports = { sequelize, initializeDatabase };
