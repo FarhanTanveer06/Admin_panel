@@ -38,36 +38,21 @@ async function initializeDatabase() {
 
   await sequelize.authenticate();
 
-  const PermissionGroup = require('../models/PermissionGroup');
-  const Permission = require('../models/Permission');
-  const Role = require('../models/Role');
-  const User = require('../models/User');
+  // Load every model so Sequelize knows about all associations before syncing
+  require('../models/PermissionGroup');
+  require('../models/Permission');
+  require('../models/Role');
+  require('../models/User');
+  require('../models/RefreshToken');
   require('../models/Media');
   require('../models/Category');
 
-  await PermissionGroup.sync({ alter: true });
-  await Permission.sync({ alter: true });
-  await Role.sync({ alter: true });
-
-  const [columnRows] = await sequelize.query(`
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'roleId'
-  `);
-
-  if (columnRows.length === 0) {
-    await sequelize.query('ALTER TABLE "users" ADD COLUMN "roleId" INTEGER');
-  }
-
-  const [defaultRole] = await Role.findOrCreate({
-    where: { name: 'User' },
-    defaults: { description: 'Default user role' },
-  });
-
-  await User.update({ roleId: defaultRole.id }, { where: { roleId: null } });
-  await sequelize.query(`ALTER TABLE "users" ALTER COLUMN "roleId" SET DEFAULT ${defaultRole.id}`);
-
+  // force: true drops and recreates all tables in correct dependency order.
+  // Safe right now because the database is empty / being reset.
+  // TODO: change back to { alter: true } once tables exist and you have real data to preserve.
   await sequelize.sync({ force: true });
+
+  console.log('All tables synced successfully.');
 }
 
 module.exports = { sequelize, initializeDatabase };
