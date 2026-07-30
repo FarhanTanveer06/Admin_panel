@@ -17,7 +17,10 @@ dotenv.config();
 const app = express();
 const DEFAULT_PORT = Number(process.env.PORT || 5001);
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://admin-panel-du3f.onrender.com'],
+  credentials: true,
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
